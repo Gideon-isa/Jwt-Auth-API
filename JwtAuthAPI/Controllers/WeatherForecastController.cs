@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JwtAuthAPI.Controllers
@@ -11,23 +12,30 @@ namespace JwtAuthAPI.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        [Route("get")]
+        [HttpGet]
+        public ActionResult Get()
         {
-            _logger = logger;
+            return Ok(Summaries);
+       
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [Route("getsecond")]
+        [HttpGet]
+        [Authorize(Roles ="ADMIN")]
+        public ActionResult GetSecond()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return Ok(Summaries);
+
+        }
+
+        [Route("getthird")]
+        [HttpGet]
+        [Authorize(Roles = "OWNER")]
+        public ActionResult GetThird()
+        {
+            return Ok(Summaries);
+
         }
     }
 }
