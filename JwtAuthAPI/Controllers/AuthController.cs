@@ -122,5 +122,37 @@ namespace JwtAuthAPI.Controllers
 
             return Ok(token);
         }
+
+        [HttpPost]
+        [Route("make-admin")]
+        public async Task<ActionResult> MakeAdmin([FromBody] UpdatePermissionDto update)
+        {
+            var user = await _userManager.FindByNameAsync(update.UserName);
+
+            if (user is null)
+            {
+                return BadRequest("Invalid user");
+            }
+
+            var taskResult = await _userManager.AddToRoleAsync(user, StaticUserRoles.ADMIN);
+
+            return Ok("User is now and Admin");
+        }
+
+        [HttpPost]
+        [Route("make-owner")]
+        public async Task<ActionResult> MakeOwner([FromBody] UpdatePermissionDto update)
+        {
+            var user = await _userManager.FindByNameAsync(update.UserName);
+
+            if (user is null)
+            {
+                return BadRequest("Invalid user");
+            }
+
+            var taskResult = await _userManager.AddToRoleAsync(user, StaticUserRoles.OWNER);
+
+            return Ok("User is now and Owner");
+        }
     }
 }
