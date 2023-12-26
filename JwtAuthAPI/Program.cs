@@ -1,5 +1,6 @@
 
 using JwtAuthAPI.Core.DbContext;
+using JwtAuthAPI.Core.JwtProvider;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +16,20 @@ namespace JwtAuthAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.Configure<JwtOptions>(options =>
+            {
+                options.Issuer = builder.Configuration["JWT:ValidIssuer"];
+                options.Audience = builder.Configuration["JWT:ValidAudience"];
+                options.SigningKey = builder.Configuration["JWT:SecretKey"];
+
+            });
 
             // Add DB here
             builder.Services.AddDbContext<ApplicationDbContext>(opt =>
