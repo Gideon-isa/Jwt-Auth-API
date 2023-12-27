@@ -1,5 +1,6 @@
 
 using JwtAuthAPI.Core.DbContext;
+using JwtAuthAPI.Core.Entities;
 using JwtAuthAPI.Core.JwtProvider;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -40,7 +41,7 @@ namespace JwtAuthAPI
 
             // Add Identity
             builder.Services
-                .AddIdentity<IdentityUser, IdentityRole>()
+                .AddIdentity<ApplicationUser, IdentityRole>()   //.AddIdentity<IdentityUser, IdentityRole>() -> This is using the default Identity user
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 

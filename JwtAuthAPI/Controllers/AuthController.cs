@@ -1,4 +1,5 @@
 ﻿using JwtAuthAPI.Core.Dtos;
+using JwtAuthAPI.Core.Entities;
 using JwtAuthAPI.Core.JwtProvider;
 using JwtAuthAPI.Core.OtherObjects;
 using Microsoft.AspNetCore.Http;
@@ -12,12 +13,12 @@ namespace JwtAuthAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IJwtProvider _jwtProvider;
 
-        public AuthController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IJwtProvider jwtProvider)
+        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IJwtProvider jwtProvider)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -69,8 +70,10 @@ namespace JwtAuthAPI.Controllers
                 return BadRequest("Username already exists");
             }
 
-            IdentityUser newUser = new IdentityUser()
+            ApplicationUser newUser = new ApplicationUser()
             {
+                FirstName = register.FirstName,
+                LastName = register.LastName,
                 Email = register.Email,
                 UserName = register.UserName,
                 SecurityStamp = Guid.NewGuid().ToString(),
@@ -101,7 +104,7 @@ namespace JwtAuthAPI.Controllers
         public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
         {
             //gets the user by username
-            IdentityUser? user = await _userManager.FindByNameAsync(loginDto.UserName);
+            ApplicationUser? user = await _userManager.FindByNameAsync(loginDto.UserName);
 
             if (user is null)
             {
