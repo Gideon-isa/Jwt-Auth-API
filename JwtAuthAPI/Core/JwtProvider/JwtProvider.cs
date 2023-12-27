@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using JwtAuthAPI.Core.Entities;
+using JwtAuthAPI.Core.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,14 +19,16 @@ namespace JwtAuthAPI.Core.JwtProvider
         }
 
 
-        public string GenerateToken(IdentityUser user, List<string> userRoles)
+        public string GenerateToken(ApplicationUser user, List<string> userRoles)
         {
 
             var authClaim = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.UserName!),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim("JWTID", Guid.NewGuid().ToString())
+                new Claim("JWTID", Guid.NewGuid().ToString()),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName)
             };
 
             // adding the user's role if any
