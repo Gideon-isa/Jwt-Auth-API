@@ -1,4 +1,5 @@
 ﻿using JwtAuthAPI.Core.Entities;
+using JwtAuthAPI.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace JwtAuthAPI.Core.JwtProvider
+namespace JwtAuthAPI.Core.Interfaces
 {
     public interface IJwtProvider
     {

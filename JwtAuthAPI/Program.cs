@@ -1,7 +1,9 @@
 
 using JwtAuthAPI.Core.DbContext;
 using JwtAuthAPI.Core.Entities;
+using JwtAuthAPI.Core.Interfaces;
 using JwtAuthAPI.Core.JwtProvider;
+using JwtAuthAPI.Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,7 @@ namespace JwtAuthAPI
 
             // Add services to the container.
             builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
